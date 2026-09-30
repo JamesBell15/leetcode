@@ -1,0 +1,13 @@
+{
+  "name": "leet",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "watch": "vitest"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}
