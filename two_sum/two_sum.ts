@@ -10,17 +10,14 @@ type Thunk = () => number[] | Thunk;
 
 function l(target, original_array: number[], i: number, j: number): Thunk {
     // Skip double counting the same index
-    if (i == j) {
+    if (i == j) 
         return () => l(target, original_array, i, ++j);
-    };
 
     if ((original_array[i] + original_array[j]) == target) 
-        return () => [ 
-            i, 
-            j
-        ];
+        return () => [i, j];
 
-    if (i == original_array.length) return () => [];
+    if (i == original_array.length) 
+        return () => [];
 
     if (j == original_array.length) {
         ++i;
