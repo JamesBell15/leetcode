@@ -12,3 +12,13 @@ test("example 2", () => {
 test("example 3", () => {
     expect(twoSum([3,3], 6)).toEqual([0, 1]);
 });
+
+test("example 4", () => {
+    expect(twoSum([2,5,5,11], 10)).toEqual([1, 2]);
+})
+
+test("example 5", () => {
+    expect(twoSum(
+        [...Array(10000).keys()].map(i => i + 1)
+        , 19999)).toEqual([9998, 9999]);
+})
