@@ -1,28 +1,43 @@
-export function twoSum(nums: number[], target: number): number[] {
-    return l(target, nums, nums, nums.slice(1));
-}
+const trampoline_function = (func) => (...rest_arguments) => {
+    let result = func(...rest_arguments);
+    while (typeof result === 'function') {
+        result = result();
+    }
+    return result;
+};
 
-function l(target, original_array: number[], array_one: number[], array_two: number[]): number[] {
-    if ((array_one[0] + array_two[0]) == target) 
-        return [ 
-            original_array.length - array_one.length, 
-            original_array.length - array_two.length
+type Thunk = () => number[] | Thunk;
+
+function l(target, original_array: number[], i: number, j: number): Thunk {
+    // Skip double counting the same index
+    if (i == j) {
+        return () => l(target, original_array, i, ++j);
+    };
+
+    if ((original_array[i] + original_array[j]) == target) 
+        return () => [ 
+            i, 
+            j
         ];
 
-    if (array_one.length == 1) return [];
+    if (i == original_array.length) return () => [];
 
-    if (array_two.length == 1) {
-        const new_array = array_one.slice(1);
+    if (j == original_array.length) {
+        ++i;
 
-        console.log(`new_array: ${new_array}`)
-        
-        return l(
+        return () => l(
             target, 
             original_array,
-            new_array,
-            original_array
+            i,
+            i + 1
         );
     }
 
-    return l(target, original_array, array_one, array_two.slice(1));
+    return () => l(target, original_array, i, ++j);
+};
+
+export function twoSum(nums: number[], target: number) : number[] {
+    const lambda = trampoline_function(l);
+
+    return lambda(target, nums, 0, 1);
 }
